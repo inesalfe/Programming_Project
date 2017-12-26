@@ -2,16 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct 
-{
-	void * buffer;
-	void * buffer_end;
-	void * head;
-	void * tail;
-	size_t size;
-	int capacity;
-	int count;
-} RingBuffer;
+#include "circularbuffer.h"
 
 RingBuffer * newRingBuffer(int capacity, size_t size){
 
@@ -24,6 +15,7 @@ RingBuffer * newRingBuffer(int capacity, size_t size){
 	rb->size 		= size;
 	rb->capacity 	= capacity;
 	rb->count 		= 0;
+
 	return rb;
 }
 
@@ -52,7 +44,7 @@ void pushRingBuffer(RingBuffer * rb, void * item){
 	rb->count ++;
 }
 
-	void * popRingBuffer(RingBuffer * rb){
+void * popRingBuffer(RingBuffer * rb){
 
 	void * item;
 	if(isemptyRingBuffer(rb) == 1)
@@ -80,7 +72,7 @@ void printRingBuffer(RingBuffer * rb, void (* print)(void*)){
 		if(tmp == rb->buffer_end)
 			tmp = rb->buffer;
 		i++;
-		if(i%5 == 0) printf("\n");
+		if(i%3 == 0) printf("\n");
 	}while(tmp != rb->tail);
 	printf("\n");
 
@@ -92,21 +84,21 @@ void printDouble(void * x)
     printf(" %lf ", * tmp);
 }
 
-// Testing
-int main(){
+// // Testing
+// int main(){
 
-	double a;
-	RingBuffer * rb = newRingBuffer(3, sizeof(double));
-	a = 1.0;
-	pushRingBuffer(rb, &a);
-	printRingBuffer(rb, printDouble);
-	a = 2.0;
-	pushRingBuffer(rb, &a);	
-	printRingBuffer(rb, printDouble);
-	a = 3.0;
-	pushRingBuffer(rb, &a);	
-	printRingBuffer(rb, printDouble);
-	a = *((double *)popRingBuffer(rb));
-	printf("%lf\n", a);
-	printRingBuffer(rb, printDouble);
-}
+// 	double a;
+// 	RingBuffer * rb = newRingBuffer(3, sizeof(double));
+// 	a = 1.0;
+// 	pushRingBuffer(rb, &a);
+// 	printRingBuffer(rb, printDouble);
+// 	a = 2.0;
+// 	pushRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printDouble);
+// 	a = 3.0;
+// 	pushRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printDouble);
+// 	a = *((double *)popRingBuffer(rb));
+// 	printf("%lf\n", a);
+// 	printRingBuffer(rb, printDouble);
+// }

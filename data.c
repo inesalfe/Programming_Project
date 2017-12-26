@@ -2,24 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "data.h"
+
 #define G 9.8
-
-typedef struct 
-{
-	double t;
-	double x;
-	double v;
-	double theta;
-	double omega;
-} Coords;
-
-typedef struct 
-{
-	double m;
-	double M;
-	double k;
-	double l;
-} Consts;
 
 Consts * newConsts(double m, double M, double k, double l){
 	
@@ -74,19 +59,20 @@ void solver(Coords* coords, Consts* consts, double delta_t){
 
 }
 
-int main(){
+// // Testing
+// int main(){
 
-	Coords * coords; 
-	Consts * consts;
-	double t, tf = 100, delta_t = 1e-3;
+// 	Coords * coords; 
+// 	Consts * consts;
+// 	double t, tf = 100, delta_t = 1e-3;
 
-	consts 	= newConsts(0.2, 0.3, 50.0, 0.3); 
-	coords 	= newCoords(0.1, 0.0, M_PI / 4, 0.0);
+// 	consts 	= newConsts(0.2, 0.3, 50.0, 0.3); 
+// 	coords 	= newCoords(0.1, 0.0, M_PI / 4, 0.0);
 
-	for(t = 0; t <= tf; t += delta_t){
-		solver(coords, consts, delta_t);
-		printCoords(coords);
-	}
+// 	for(t = 0; t <= tf; t += delta_t){
+// 		solver(coords, consts, delta_t);
+// 		printCoords(coords);
+// 	}
 
-	return 0;
-}
+// 	return 0;
+// }

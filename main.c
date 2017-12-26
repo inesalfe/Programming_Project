@@ -1,18 +1,18 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <cairo.h>
+#include <gtk/gtk.h>
+
+#include "data.h"
+#include "circularbuffer.h"
 
 // Global Variables
-#define DATA_MEMORY = 100
-#define DELTA_T		= 1e-3
+#define DATA_MEMORY 10
+#define DELTA_T 	1e-1
 
-#define PAUSED = 0;
-
-typedef struct $
-{
-	Widgets * widgets;
-	Data    * data;
-	int 	status;
-	double 	timer;
-	int 	discrete_timer;
-} Global;
+#define PLAY 1
+#define PAUSE 0
 
 typedef struct
 {
@@ -22,15 +22,27 @@ typedef struct
 
 typedef struct 
 {
-	RingBuffer * x;
-	RingBuffer * theta;
-	double * t;
+	RingBuffer * x_rb;
+	RingBuffer * theta_rb;
+	RingBuffer * t_rb;
+	Coords * coords;
+	Consts * consts;
 } Data;
 
-// Timer Handler
-gboolean timeHandler(gpointer data){
+typedef struct
+{
+	Widgets * widgets;
+	Data    * data;
+	int 	status;
+	double 	timer;
+	int 	discrete_timer;
+} Global;
 
-	Global * global = (Global *) data;
+// Timer Handler
+gboolean timeHandler(gpointer gptr){
+
+	Global 	* global 	= (Global *) gptr;
+	Data 	* data 		= global->data;
 	double x;
 	double theta;
 
@@ -38,13 +50,19 @@ gboolean timeHandler(gpointer data){
 		global->timer += DELTA_T;
 		global->discrete_timer ++;
 
-		solver(coords, consts, DELTA_T);
+		solver(data->coords, data->consts, DELTA_T);
 
-		x 		= coords->x;
-		theta 	= coords->theta; 	
-		pushRingBuffer(global->x, &x);
-		pushRingBuffer(global->theta, &theta);
+		x 		= data->coords->x;
+		theta 	= data->coords->theta; 	
+		if(isfullRingBuffer(data->x_rb) == 1)
+			popRingBuffer(data->x_rb);
+		pushRingBuffer(data->x_rb, &x);
+		pushRingBuffer(data->theta_rb, &theta);
+		printf("-------------- t = %lf -------------- \n", global->timer);
+		printRingBuffer(data->x_rb, printDouble);
 	}
+
+	return TRUE;
 }
 
 // // Plot Drawing Handler
@@ -57,26 +75,24 @@ gboolean timeHandler(gpointer data){
 int main(int argc, char** argv){
 
 	// Variable Initialization
+	int i;
+
 	Global * global = (Global *) malloc(sizeof(Global));
 	Data   * data   = (Data *)   malloc(sizeof(Data));
 	GtkWidget * window;
 	GtkWidget * plot;
 
 		// (1.) Setup Status Vars
-	global->status = PAUSED;
+	global->status = PLAY;
 
 		// (2.) Setup Data
 
-	data->x 	= (double *) malloc(DATA_MEMORY * sizeof(double));
-	data->theta = (double *) malloc(DATA_MEMORY * sizeof(double));
+	data->x_rb 		= newRingBuffer(DATA_MEMORY, sizeof(double));
+	data->theta_rb 	= newRingBuffer(DATA_MEMORY, sizeof(double));
+	data->t_rb 		= newRingBuffer(DATA_MEMORY, sizeof(double));
 
-	for(i = 0; i < DATA_MEMORY;i ++){
-		data->x[i] 		= 0.0;
-		data->theta[i] 	= 0.0;
-	}
-
-	consts = newConst();
-	coords = newCoords();
+	data->consts 	= newConsts(0.2, 0.3, 50.0, 0.3); 
+	data->coords 	= newCoords(0.1, 0.0, M_PI / 4, 0.0);
 
 	global->timer 			= 0.0;
 	global->discrete_timer 	= 0;
@@ -87,25 +103,25 @@ int main(int argc, char** argv){
 	gtk_init (&argc, &argv);
 
 		// Main Window
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size (GTK_WINDOW(window), 1200, 600);
-	gtk_window_set_title (GTK_WINDOW(window), " Programming - Final Project ");
-	gtk_window_set_position (GTK_WINDOW(window), GTK_WIN_POS_CENTER);
-	global->widgets->window = window;
+	// window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	// gtk_window_set_default_size (GTK_WINDOW(window), 1200, 600);
+	// gtk_window_set_title (GTK_WINDOW(window), " Programming - Final Project ");
+	// gtk_window_set_position (GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+	// global->widgets->window = window;
 
 		// Plots
-	plot = gtk_drawing_area_new();
-	gtk_container_add(GTK_CONTAINER(window), plot);
-	global->widgets->window = plot;
+	// plot = gtk_drawing_area_new();
+	// gtk_container_add(GTK_CONTAINER(window), plot);
+	// global->widgets->window = plot;
 
 		// Set Timer
 	g_timeout_add(1000 * DELTA_T, timeHandler, global);
 
 		// Set Handlers
-	g_signal_connect (G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+	// g_signal_connect (G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	// g_signal_connect (G_OBJECT(window), "draw", G_CALLBACK(drawplotHandler), global);
 
-	gtk_widget_show_all (window);
+	// gtk_widget_show_all (window);
 	gtk_main ();
 
 	return 0;
