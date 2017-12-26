@@ -22,8 +22,8 @@ typedef struct
 
 typedef struct 
 {
-	double * x;
-	double * theta;
+	RingBuffer * x;
+	RingBuffer * theta;
 	double * t;
 } Data;
 
@@ -31,20 +31,28 @@ typedef struct
 gboolean timeHandler(gpointer data){
 
 	Global * global = (Global *) data;
+	double x;
+	double theta;
 
-	if (global->status == PAUSED){
+	if (global->status == PLAY){
 		global->timer += DELTA_T;
-		global->x
+		global->discrete_timer ++;
+
+		solver(coords, consts, DELTA_T);
+
+		x 		= coords->x;
+		theta 	= coords->theta; 	
+		pushRingBuffer(global->x, &x);
+		pushRingBuffer(global->theta, &theta);
 	}
-
 }
 
-// Plot Drawing Handler
-gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
+// // Plot Drawing Handler
+// gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 
 
 
-}
+// }
 
 int main(int argc, char** argv){
 
@@ -54,12 +62,10 @@ int main(int argc, char** argv){
 	GtkWidget * window;
 	GtkWidget * plot;
 
-		// (1.) Setup 
+		// (1.) Setup Status Vars
 	global->status = PAUSED;
 
 		// (2.) Setup Data
-	global->timer 			= 0.0;
-	global->discrete_timer 	= 0;
 
 	data->x 	= (double *) malloc(DATA_MEMORY * sizeof(double));
 	data->theta = (double *) malloc(DATA_MEMORY * sizeof(double));
@@ -69,6 +75,11 @@ int main(int argc, char** argv){
 		data->theta[i] 	= 0.0;
 	}
 
+	consts = newConst();
+	coords = newCoords();
+
+	global->timer 			= 0.0;
+	global->discrete_timer 	= 0;
 	global->data = data;
 		
 		// (3.) Setup GTK Widgets
@@ -92,7 +103,7 @@ int main(int argc, char** argv){
 
 		// Set Handlers
 	g_signal_connect (G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect (G_OBJECT(window), "draw", G_CALLBACK(drawplotHandler), global);
+	// g_signal_connect (G_OBJECT(window), "draw", G_CALLBACK(drawplotHandler), global);
 
 	gtk_widget_show_all (window);
 	gtk_main ();
