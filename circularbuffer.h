@@ -3,15 +3,11 @@
 
 typedef struct 
 {
-	void * buffer;
-	void * buffer_end;
-	void * head;
-	void * tail;
+	void ** buffer;
 	size_t size;
 	int capacity;
-	int count;
+	int length;
 } RingBuffer;
-
 
 RingBuffer * newRingBuffer(int , size_t);
 
@@ -19,9 +15,7 @@ int isfullRingBuffer(RingBuffer *);
 
 int isemptyRingBuffer(RingBuffer *);
 
-void pushRingBuffer(RingBuffer * , void * );
-
-void * popRingBuffer(RingBuffer * );
+void writeRingBuffer(RingBuffer * , void * );
 
 void printRingBuffer(RingBuffer *, void (* print)(void*));
 
