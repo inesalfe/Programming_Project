@@ -184,9 +184,9 @@ gboolean timeHandler(gpointer gptr){
 		writeRingBuffer(data->t_rb, &t);
 		writeRingBuffer(data->x_rb, &x);
 		writeRingBuffer(data->theta_rb, &theta);
-		gtk_widget_queue_draw(widgets->plot);
 	}
 
+	gtk_widget_queue_draw(widgets->plot);
 
 
 	return TRUE;
@@ -212,6 +212,16 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
     cairo_move_to(cr, 50.0, 250.0);
     cairo_line_to(cr, 50.0, 50.0);
     cairo_stroke(cr);
+
+    cairo_move_to(cr, 350.0, 150.0);
+    cairo_line_to(cr, 345.0, 144.0);
+    cairo_move_to(cr, 350.0, 150.0);
+    cairo_line_to(cr, 345.0, 155.0);
+
+    cairo_move_to(cr, 50.0, 50.0);
+    cairo_line_to(cr, 45.0, 55.0);
+    cairo_move_to(cr, 50.0, 50.0);
+    cairo_line_to(cr, 55.0, 55.0);
 
     	//Labels
 
@@ -243,6 +253,17 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
     cairo_line_to(cr, 350.0, 450.0);
     cairo_move_to(cr, 200.0, 550.0);
     cairo_line_to(cr, 200.0, 350.0);
+    cairo_stroke(cr);
+
+    cairo_move_to(cr, 350.0, 450.0);
+    cairo_line_to(cr, 345.0, 445.0);
+    cairo_move_to(cr, 350.0, 450.0);
+    cairo_line_to(cr, 345.0, 455.0);
+
+    cairo_move_to(cr, 200.0, 350.0);
+    cairo_line_to(cr, 195.0, 355.0);
+    cairo_move_to(cr, 200.0, 350.0);
+    cairo_line_to(cr, 205.0, 355.0);
     cairo_stroke(cr);
 
 		// Draw Plot
