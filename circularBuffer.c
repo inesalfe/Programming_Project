@@ -66,31 +66,31 @@ void printInt(void * x)
     printf(" %d ", * tmp);
 }
 
-// Testing
-int main(){
+// // Testing
+// int main(){
 
-	int a;
-	RingBuffer * rb = newRingBuffer(3, sizeof(int));
-	a = 1;
-	writeRingBuffer(rb, &a);
-	printRingBuffer(rb, printInt);
-	printf("--------\n");
-	a = 2;
-	writeRingBuffer(rb, &a);	
-	printRingBuffer(rb, printInt);
-	printf("--------\n");
-	a = 3;
-	writeRingBuffer(rb, &a);	
-	printRingBuffer(rb, printInt);
-	printf("--------\n");
-	a = 4;
-	writeRingBuffer(rb, &a);	
-	printRingBuffer(rb, printInt);
-	a = 5;
-	writeRingBuffer(rb, &a);	
-	printRingBuffer(rb, printInt);
+// 	int a;
+// 	RingBuffer * rb = newRingBuffer(3, sizeof(int));
+// 	a = 1;
+// 	writeRingBuffer(rb, &a);
+// 	printRingBuffer(rb, printInt);
+// 	printf("--------\n");
+// 	a = 2;
+// 	writeRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printInt);
+// 	printf("--------\n");
+// 	a = 3;
+// 	writeRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printInt);
+// 	printf("--------\n");
+// 	a = 4;
+// 	writeRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printInt);
+// 	a = 5;
+// 	writeRingBuffer(rb, &a);	
+// 	printRingBuffer(rb, printInt);
 
-	// printf("%lf\n", *((double *) (&rb->buffer[1])));
-	printf("%d\n", *((int *) (&rb->buffer[1])));
+// 	// printf("%lf\n", *((double *) (&rb->buffer[1])));
+// 	printf("%d\n", *((int *) (&rb->buffer[1])));
 
-}
+// }
