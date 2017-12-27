@@ -260,12 +260,15 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	colour_plot_1[1] = 0.0;
 	colour_plot_1[2] = 255.0;
 
-	draw_plot(cr, data->t_rb, data->x_rb, 
-				t_min, t_max, 
-				-0.5, 0.5,
-				data->t_rb->length,
-				300.0, 200.0,
-				50.0, 50.0, colour_plot_1);
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(global->widgets->toggle_button_plot_1)) == TRUE){
+
+		draw_plot(cr, data->t_rb, data->x_rb, 
+					t_min, t_max, 
+					-0.5, 0.5,
+					data->t_rb->length,
+					300.0, 200.0,
+					50.0, 50.0, colour_plot_1);
+	}
 
 		// Plot theta(t)
 
@@ -273,12 +276,15 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	colour_plot_2[1] = 0.0;
 	colour_plot_2[2] = 0.0;
 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(global->widgets->toggle_button_plot_2)) == TRUE){
+
 	draw_plot(cr, data->t_rb, data->theta_rb, 
 				t_min, t_max, 
 				-M_PI / 2, M_PI / 2,
 				data->t_rb->length,
 				300.0, 200.0,
 				50.0, 50.0, colour_plot_2);
+	}
 
 		// Plot x(theta)
 
@@ -286,12 +292,15 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	colour_plot_3[1] = 100.0;
 	colour_plot_3[2] = 0.0;
 
+	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(global->widgets->toggle_button_plot_3)) == TRUE){
+
 	draw_plot(cr, data->theta_rb, data->x_rb, 
 				-0.5, 0.5, 
 				-M_PI / 2, M_PI / 2,
 				data->t_rb->length,
 				150.0, 100.0,
 				125.0, 400.0, colour_plot_3);
+	}
 
 	return TRUE;
 
