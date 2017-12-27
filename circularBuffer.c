@@ -32,10 +32,17 @@ int isemptyRingBuffer(RingBuffer * rb){
 
 void writeRingBuffer(RingBuffer * rb, void * item){
 	
-	if (isfullRingBuffer(rb) == 1)
-		return;
-	memcpy(&rb->buffer[rb->length], item, rb->size);
-	rb->length ++;
+	void * tmp = rb->buffer;
+
+	if (isfullRingBuffer(rb) == 1){
+		rb->buffer = realloc(rb->buffer, (rb->capacity + 1) * rb->size);
+		rb->buffer = &rb->buffer[1];
+		free(tmp);
+	}
+	else
+		rb->length ++;
+	memcpy(&rb->buffer[rb->length-1], item, rb->size);
+
 }
 
 void printRingBuffer(RingBuffer * rb, void (* print)(void*)){

@@ -79,8 +79,8 @@ gboolean timeHandler(gpointer gptr){
 		theta 	= data->coords->theta; 	
 		if(isfullRingBuffer(data->x_rb) == 1)
 			popRingBuffer(data->x_rb);
-		pushRingBuffer(data->x_rb, &x);
-		pushRingBuffer(data->theta_rb, &theta);
+		writeRingBuffer(data->x_rb, &x);
+		writeRingBuffer(data->theta_rb, &theta);
 		printf("-------------- t = %lf -------------- \n", global->timer);
 		printRingBuffer(data->x_rb, printDouble);
 	}
