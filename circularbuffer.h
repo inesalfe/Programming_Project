@@ -17,6 +17,10 @@ int isfullRingBuffer(RingBuffer *);
 
 int isemptyRingBuffer(RingBuffer *);
 
+void clearRingBuffer(RingBuffer * );
+
+void freeRingBuffer(RingBuffer * );
+
 void writeRingBuffer(RingBuffer * , void * );
 
 void printRingBuffer(RingBuffer *, void (* print)(void*));

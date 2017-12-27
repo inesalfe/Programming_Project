@@ -58,36 +58,116 @@ void draw_figure(	cairo_t *cr, RingBuffer * pos_rb, RingBuffer * ang_rb,
 
 	cairo_set_source_rgb(cr, 0.0, 0.0, 0.0) ;
 
-	int idx;
+	int j, i, idx;
 	double pos, ang;
 	double x, y;
+	double delta_x, delta_y;
+	double x_prev, x_next, y_prev, y_next;
 	double x0, y0, x1, y1;
 
 		// current coordenates
 	idx 	= (pos_rb->tail-1) % pos_rb->capacity; 
 	pos		= *((double *) (&pos_rb->buffer[idx]));
 	ang 	= *((double *) (&ang_rb->buffer[idx]));
-	x = sin(ang) * l + pos;
-	y = cos(ang) * l;
-	printf("x : %lf, y : %lf\n", x, y);
+	
+	x0 = (pos - x_min) / (x_max - x_min) * 350.0;
+	y0 = 50.0;
+	x1 = (sin(ang) * l + pos - x_min) / (x_max - x_min) * 350.0;
+	y1 = (cos(ang) * l - y_min) / (y_max - y_min) * 350.0 + 50.0;
 
-	x0 = (pos - x_min) / (x_max - x_min) * xaxis_pixels + x_start - MASS_WIDTH / 2;
-	y0 = 50;
-	x1 = (x - x_min) / (x_max - x_min) * xaxis_pixels + x_start;
-	y1 = (y - y_min) / (y_max - y_min) * yaxis_pixels + y_start;
 
 		// ball
 	cairo_arc(cr, x1, y1, PENDULUM_RADIUS, 0, 2 * M_PI);
 	cairo_fill(cr);
 
 		// stem
-	cairo_move_to(cr, x0 + MASS_WIDTH / 2, y0);
+	cairo_move_to(cr, x0, y0);
 	cairo_line_to(cr, x1, y1);
 	cairo_stroke(cr);
 
 		// mass
-	cairo_rectangle(cr, x0, y0, MASS_WIDTH, MASS_HEIGHT);
+	cairo_rectangle(cr, x0 - MASS_WIDTH / 2, y0 - MASS_HEIGHT / 2, MASS_WIDTH, MASS_HEIGHT);
 	cairo_fill(cr);
+
+		// spring
+	cairo_move_to(cr, 25.0, y0);
+	cairo_line_to(cr, 50.0, y0);
+
+	cairo_move_to(cr, 25.0, y0 + 10.0);
+	cairo_line_to(cr, 25.0, y0 - 10.0);
+
+	cairo_move_to(cr, x0 - MASS_WIDTH / 2, y0);
+	cairo_line_to(cr, x0 - MASS_WIDTH / 2 - 25.0, y0);
+
+	cairo_move_to(cr, 375.0, y0);
+	cairo_line_to(cr, 350.0, y0);
+
+	cairo_move_to(cr, 375.0, y0 + 10.0);
+	cairo_line_to(cr, 375.0, y0 - 10.0);
+
+	cairo_move_to(cr, x0 + MASS_WIDTH / 2, y0);
+	cairo_line_to(cr, x0 + MASS_WIDTH / 2 + 25.0, y0);
+
+	delta_x = (x0 - MASS_WIDTH / 2 - 75.0) / 10; 
+	delta_y = 25.0;
+	x 	= 50.0;
+	for(j = 0, x = 50.0; j < 2 ; j++, x += 300.0){
+		if(j == 0) delta_x = (x0 - MASS_WIDTH / 2 - 75.0) / 10; 
+		else delta_x = - (325.0 - x0 - MASS_WIDTH / 2) / 10; 
+		x_prev = x;
+		for(i = 0, x_next = x_prev + delta_x; i < 10 ; i++, x_next += delta_x){
+			if(i % 2 == 0){ 
+				y_next = y0 + delta_y;
+				y_prev = y0 - delta_y;}
+			else{
+				y_next = y0 - delta_y;
+				y_prev = y0 + delta_y;}		  
+			if(i == 0) y_prev = y0;
+			if(i == 9) y_next = y0;
+			cairo_move_to(cr, x_prev, y_prev);
+			cairo_line_to(cr, x_next, y_next);
+			x_prev = x_next;}}
+
+	cairo_stroke(cr);
+
+
+
+	// idx 	= (pos_rb->tail-1) % pos_rb->capacity; 
+	// pos		= *((double *) (&pos_rb->buffer[idx]));
+	// ang 	= *((double *) (&ang_rb->buffer[idx]));
+	// x = sin(ang) * l + pos;
+	// y = cos(ang) * l;
+	// printf("x : %lf, y : %lf\n", x, y);
+
+	// x0 = (pos - x_min) / (x_max - x_min) * xaxis_pixels + x_start - MASS_WIDTH / 2;
+	// y0 = 50;
+	// x1 = (x - x_min) / (x_max - x_min) * xaxis_pixels + x_start;
+	// y1 = (y - y_min) / (y_max - y_min) * yaxis_pixels + y_start;
+
+	// 	// ball
+	// cairo_arc(cr, x1, y1, PENDULUM_RADIUS, 0, 2 * M_PI);
+	// cairo_fill(cr);
+
+	// 	// stem
+	// cairo_move_to(cr, x0 + MASS_WIDTH / 2, y0);
+	// cairo_line_to(cr, x1, y1);
+	// cairo_stroke(cr);
+
+	// 	// mass
+	// cairo_rectangle(cr, x0, y0, MASS_WIDTH, MASS_HEIGHT);
+	// cairo_fill(cr);
+
+	// 	// spring
+	// for(){
+	// 	start = 50; 
+
+	// 	x = c * delta 
+	// 	cairo_move_to();
+	// 	cairo_line_to();
+	// }
+	// cairo_
+
+
 
 }
 
@@ -110,10 +190,12 @@ void draw_plot(	cairo_t *cr, RingBuffer * x_rb, RingBuffer * y_rb,
 		y0 = *((double *) (&y_rb->buffer[idx0]));
 		x1 = *((double *) (&x_rb->buffer[idx1]));
 		y1 = *((double *) (&y_rb->buffer[idx1]));
+		printf("x0 = %lf, x1 = %lf, y0 = %lf, y1 = %lf\n", x0, x1, y0, y1);
 		x0 = (x0 - x_min) / (x_max - x_min) * xaxis_pixels + x_start;
 		y0 = (y0 - y_min) / (y_max - y_min) * yaxis_pixels + y_start;
 		x1 = (x1 - x_min) / (x_max - x_min) * xaxis_pixels + x_start;
 		y1 = (y1 - y_min) / (y_max - y_min) * yaxis_pixels + y_start;
+		printf("x0 = %lf, x1 = %lf, y0 = %lf, y1 = %lf\n", x0, x1, y0, y1);
 		cairo_move_to(cr, x0, y0);
 		cairo_line_to(cr, x1, y1);
 	}
@@ -151,7 +233,7 @@ gboolean timeHandler(gpointer gptr){
 // Plot Drawing Handler
 gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 
-	// Data 	* data 		= global->data;
+	Data 	* data 		= global->data;
 	// Widgets * Widgets   = global->widgets;
 
 	double t_min, t_max;
@@ -166,7 +248,7 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	t_max 	= MAX(global->timer, DATA_MEMORY * DELTA_T);
 	t_min 	= MAX(global->timer - (DATA_MEMORY - 1) * DELTA_T, 0);
 
-	// 	// Plot x(t)
+		// Plot x(t)
 	// draw_plot(cr, data->t_rb, data->x_rb, 
 	// 			t_min, t_max, 
 	// 			-0.5, 0.5,
@@ -182,13 +264,13 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	// 			400.0, 400.0,
 	// 			100.0, 100.0);
 
-		// Plot x(theta)
-	// draw_plot(cr, data->x_rb, data->theta_rb, 
-	// 			-0.5, 0.5, 
-	// 			-M_PI / 2, M_PI / 2,
-	// 			data->t_rb->length,
-	// 			400.0, 400.0,
-	// 			100.0, 100.0);
+	// 	Plot x(theta)
+	draw_plot(cr, data->theta_rb, data->x_rb,
+				-M_PI / 2, M_PI / 2,
+				-data->consts->l, data->consts->l,
+				data->t_rb->length,
+				300.0, 300.0,
+				100.0, 100.0);
 
 	return TRUE;
 

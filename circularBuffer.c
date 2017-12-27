@@ -41,6 +41,15 @@ void writeRingBuffer(RingBuffer * rb, void * item){
 	rb->tail = (rb->tail + 1) % rb->capacity;
 }
 
+void clearRingBuffer(RingBuffer * rb){
+	rb->length = rb->head = rb->tail = 0;
+}
+
+void freeRingBuffer(RingBuffer * rb){
+	free(rb->buffer);
+	free(rb);
+}
+
 void printRingBuffer(RingBuffer * rb, void (* print)(void*)){
 
 	int i, idx;
