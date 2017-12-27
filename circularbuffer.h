@@ -4,6 +4,8 @@
 typedef struct 
 {
 	void ** buffer;
+	int head;
+	int tail;
 	size_t size;
 	int capacity;
 	int length;
