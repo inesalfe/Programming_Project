@@ -3,7 +3,6 @@
 
 typedef struct 
 {
-	double t;
 	double x;
 	double v;
 	double theta;

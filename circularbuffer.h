@@ -1,5 +1,5 @@
-#ifndef CIRCULARBUFFER_H_
-#define CIRCULARBUFFER_H_
+#ifndef LINKEDLIST_H_
+#define LINKEDLIST_H_
 
 typedef struct 
 {

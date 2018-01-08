@@ -19,7 +19,6 @@ Consts * newConsts(double m, double M, double k, double l){
 Coords* newCoords(double x, double v, double theta, double omega){
 
 	Coords * coords = (Coords *) malloc(sizeof(Coords));
-	coords->t = 0.0;
 	coords->x = x;
 	coords->v = v;
 	coords->theta = theta;
@@ -28,7 +27,7 @@ Coords* newCoords(double x, double v, double theta, double omega){
 }
 
 void printCoords(Coords * coords){
-	printf("t : %lf, x : %lf, v : %lf, theta : %lf, omega : %lf \n", coords->t, coords->x, coords->v, coords->theta, coords->omega);
+	printf("x : %lf, v : %lf, theta : %lf, omega : %lf \n", coords->x, coords->v, coords->theta, coords->omega);
 }
 
 void solver(Coords* coords, Consts* consts, double delta_t){
@@ -51,7 +50,6 @@ void solver(Coords* coords, Consts* consts, double delta_t){
 				+ C * cos(coords->theta) * coords->x) 	
 				/ (1 + Z * pow(sin(coords->theta), 2));
 
-	coords->t 	= coords->t + delta_t;
 	coords->v 	= coords->v + f_x * delta_t; 
 	coords->x 	= coords->x + coords->v * delta_t; 
 	coords->omega = coords->omega + f_theta * delta_t;
