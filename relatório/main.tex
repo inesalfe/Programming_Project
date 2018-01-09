@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+
+\section*{Introdu\c{c}\~ao}
+
+\section{Sec\c{c}\~ao A - Representa\c{c}\~oes Gr\'aficas}
+
+{
+Nesta sec\c{c}\~ao podemos observar dois sistemas de gr\'aficos que podem apresentar no m\'aximo 3 gr\'aficos.
+\\
+O sistema superior pode apresentar um ou dois gr\'aficos sendo estes $x(t)$ e $\Theta(t)$. $x(t)$ \'e a fun\c{c}\~ao que relaciona a posi\c{c}\~ao da massa $M$, $x$, em metros, em fun\c{c}\~ao do tempo, $s$, em segundos. $\Theta(t)$ \'e a fun\c{c}\~ao que relaciona o \^angulo que a massa $m$ faz com a vertical, $\Theta(t)$, em radianos, também em fun\c{c}\~ao do tempo, $s$, em segundos.
+\\
+O sistema inferior pode apresentar apenas um gr\'afico: $x(\Theta)$. Este gr\'afico relaciona o \^angulo que a massa $m$ faz com a vertical, $\Theta(t)$, em radianos, com a posi\c{c}\~ao da massa $M$, $x$, em metros. Esta figura assemelha-se a de um oscilosc\'opio em modo $xy$, comparando duas grandezas sem uma base de tempo.
+\\
+As escolhas dos gráficos e respetivas escalas ser\~ao explicadas respetivamente na sec\c{c}\~ao C.2.
+}
+
+\section{Sec\c{c}\~ao B - Representa\c{c}\~ao Visual}
+
+{
+Esta sec\c{c}\~ao consiste na representa\c{c}\~ao visual do sistema.
+}
+
+\section{Sec\c{c}\~ao C - Interface Ulitizador / Sistema}
+
+{
+A sec\c{c}\~ao C cont\'em um painel de controlo que permite ao utilizador manipular todas as vari\'aveis em quest\~ao bem como as condi\c{c}\~oes iniciais do sistema. Est\'a dividida em tr\^es partes.
+}
+
+\subsection{Sec\c{c}\~ao C.1 - ''Status''}
+
+{
+Este conjunto de tr\^es bot\~oes consiste no estado representa\c{c}\~ao visual e gr\'afica. Ao inicializar o programa o ''status'' do sistema encontra-se em ''pause'', ou seja, parado. O utilizador pode usar o bot\~ao ''start'' para come\c{c}ar ou continuar a simula\c{c}\~ao, o “pause” para parar e o “restart” para reiniciar. Este \'ultimo faz com que os gr\'aficos e a representa\c{c}\~ao visual come\c{c}em do in\'{\i}cio mas com os valores que est\~ao introduzidos. 
+}
+
+\subsection{Sec\c{c}\~ao C.2 - Escolha do gr\'afico e da escala}
+
+{
+A escolha dos gr\'aficos pode ser aqui feita atrav\'es da sele\c{c}\~ao de qualquer um dos bot\~oes, sendo que, se se selecionar os gr\'aficos $x(t)$ e $\Theta(t)$, estes ficar\~ao sobrepostos no sistema superior da representa\c{c}\~ao gr\'afica, como explicado anteriormente na sec\c{c}\~ao A.
+\\
+O utilizador pode alternar e tr\^es escalas de tempo diferentes, ou seja, pode vizualizar no ecr\~a a representa\c{c}\~ao gr\'afica de 3, 5 ou 10 segundos. Isto apenas \'e v\'alido para os gr\'aficos $x(t)$ e $\Theta(t)$, pois s\~ao estes que necessitam de uma base de tempo.
+}
+
+\subsection{Sec\c{c}\~ao C.3 - Vari\'aveis e Constantes Iniciais}
+
+{
+Esta sec\c{c}\~ao cont\'em as vari\'aveis que poder\~ao ser nanupuladas pelo utilizador e tamb\'em as constantes inciais. Ao inicializar o programa, est\'a j\'a atribu\'{\i}do um conjunto de valores que permitem uma simula\c{c}\~ao exemplo. Ao mudar o valor dos ''Spin Buttons'' de qualquer uma das vari\'aveis, as representa\c{c}\~oes visual e gr\'afica  mostr\~ao as altera\c{c}\~oes feitas em tempo real. Est\~ao tamb\'em definidos valores m\'{\i}nimos e m\'aximos para cada uma das vari\'aveis para que a visualiza\c{c}\~ao da simula\c{c}\~ao e dos gr\'aficos seja poss\'{\i}vel.
+\\
+As vari\'aveis que podem ser alteradas s\~ao:
+\begin{itemize}
+\item {Massa $M$ - massa do corpo que est\'a ligado as duas molas e que apenas se move no plano horizontal em kilogramas ($kg$);}
+\item {Massa $m$ - massa do p\^endulo em kilogramas ($kg$);}
+\item {Constante $k$ - constante de ambas as molas em Newton por metro ($N/m$);}
+\item {Comprimento $l$ - comprimento do p\^endulo em metros ($m$);}
+\item {$\Theta$ inicial - \^angulo inicial que a massa m faz com a vertical em radianos ($rad$);}
+\item {$x$ inicial - desvio da posi\c{c}\~ao de equil\'{\i}brio, 0,  da massa $M$ em rela\c{c}\~ao em metros ($m$).}
+\item {$v$ inicial - velocidade inicial da massa $M$ em metros por segundo ($ms^{-1}$);}
+\item {$\omega$ inicial - velocidade angular inicial da massa $m$ em radianos por segundo ($rads^{-1}$);}
+\end{itemize}
+}
+
+\end{document}
