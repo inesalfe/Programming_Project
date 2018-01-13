@@ -221,9 +221,9 @@ void draw_plot_labels(cairo_t * cr){
 }
 
 void draw_plot(	cairo_t *cr, RingBuffer * x_rb, RingBuffer * y_rb, 
+				int start, int len,
 				double x_min, double x_max,
 				double y_min, double y_max,
-				int len,
 				double xaxis_pixels, 		double yaxis_pixels,
 				double x_start, 			double y_start,
 				double * colour){
@@ -234,7 +234,9 @@ void draw_plot(	cairo_t *cr, RingBuffer * x_rb, RingBuffer * y_rb,
 
 	cairo_set_source_rgb(cr, colour[0], colour[1], colour[2]) ;
 	
-	for(i=0, idx = (x_rb->head + len) % x_rb->capacity; i < x_rb->length - 1; i++, idx = (idx + 1) % x_rb->capacity){
+	len = MIN(len, x_rb->length);
+	printf("Length: %d, Start : %d, Head : %d, Tail : %d \n", len, (x_rb->head + start) % x_rb->capacity, x_rb->head, x_rb->tail);
+	for(i=0, idx = (x_rb->head + start - 1) % x_rb->capacity; i < len - 1; i++, idx = (idx + 1) % x_rb->capacity){
 		idx0 = idx; idx1 = (idx + 1) % x_rb->capacity;
 		x0 = *((double *) (&x_rb->buffer[idx0]));
 		y0 = *((double *) (&y_rb->buffer[idx0]));
@@ -261,8 +263,8 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	double colour_plot1[3] = {0.0, 0.0, 255.0};
 	double colour_plot2[3] = {255.0, 0.0, 0.0};
 	double colour_plot3[3] = {0, 100.0, 0.0};
-
 	double t_min, t_max;
+	int start;
 
 	cairo_set_source_rgb(cr, 255.0, 255.0, 255.0) ;
 	cairo_paint(cr);
@@ -277,13 +279,14 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 
 	t_max 	= MAX(global->timer, global->scale * DELTA_T);
 	t_min 	= MAX(global->timer - (global->scale - 1) * DELTA_T, 0);
+	start 	= MIN(SCALE3 - global->scale,  MAX(0, global->discrete_timer - global->scale));
 	
 	// (3.1) x(t)
 	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(toggle_button_plot1)) == TRUE)
 		draw_plot(cr, data->t_rb, data->x_rb, 
+				start, global->scale,				
 				t_min, t_max, 
 				-0.5, 0.5,
-				global->scale,
 				300.0, 200.0,
 				50.0, 50.0, 
 				colour_plot1);
@@ -292,9 +295,9 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	// (3.2) theta(t)
 	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(toggle_button_plot2)) == TRUE)
 	draw_plot(cr, data->t_rb, data->theta_rb, 
+				start, global->scale,				
 				t_min, t_max, 
 				-M_PI / 2, M_PI / 2,
-				global->scale,
 				300.0, 200.0,
 				50.0, 50.0, 
 				colour_plot2);
@@ -302,9 +305,9 @@ gboolean drawplotHandler(GtkWidget * widget, cairo_t * cr, Global * global){
 	// (3.3) x(theta)
 	if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(toggle_button_plot3)) == TRUE)
 	draw_plot(cr, data->theta_rb, data->x_rb,
+				start, global->scale,
 				-M_PI / 2, M_PI / 2,
 				-data->consts->l, data->consts->l,
-				global->scale,
 				200.0, 200.0,
 				100.0, 350.0,
 				colour_plot3);
@@ -501,7 +504,7 @@ gboolean buttonScale2Handler(GtkWidget * widget, Global *global){
 		gtk_widget_set_sensitive(global->widgets->toggle_button_scale_3, TRUE);
 	}
 
-	global->scale = SCALE3;
+	global->scale = SCALE2;
 
 	return TRUE;
 
