@@ -16,4 +16,4 @@ The simulation window has the following aspect:
 
 <img width="1236" alt="window" src="https://user-images.githubusercontent.com/31959975/221367678-38fa220f-a1ff-47e6-afba-06fbf20195f3.png">
 
-There are default values for all the systems parameters but the user can use the minus or plus button to change any of them. Then, the user can start and pause the simulation anytime or even reset the parameters. The user can also visualize real time plots of the mass M position, $x$, and / or the angle of the pendulum, $\theta$ as a function of time. Another possibility is the plot of the the evolution of $x$ with $\theta$.
+There are default values for all the systems parameters but the user can use the minus or plus button to change any of them. Then, the user can start and pause the simulation anytime or even reset the parameters. The user can also visualize real time plots of the mass $M$ position, $x$, and / or the angle of the pendulum, $\theta$ as a function of time. Another possibility is the plot of the the evolution of $x$ with $\theta$.
